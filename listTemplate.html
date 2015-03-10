@@ -1,0 +1,34 @@
+<template name="listView">
+  <form class="new-recipe">
+    <h1>Nueva Receta</h1>
+    <input type="text" name="text" placeholder="Nombre de la receta"/>
+  </form>
+
+  <h1>Recetas:</h1>
+  <ul>
+    {{#each recetas}}
+      {{> receta}}
+    {{/each}}
+  </ul>
+</template>
+
+
+<template name="receta">
+  <!--
+  <div class="input-group">
+  <span class="input-group-addon">&times;</span>
+  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+  <span class="input-group-addon">.00</span>
+</div>
+-->
+<li>
+  <div class="input-group">
+    <button class="delete input-group-addon">&times;</button>
+    <!-- <input type="checkbox" checked="{{checked}}" class="input-group-addon" /> -->
+    <span class="text itemReceta">
+      <strong>{{nombre}}</strong> ({{referencia}}) <br>
+    </span>
+  </div>
+</li>
+
+</template>

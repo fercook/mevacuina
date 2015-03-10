@@ -1,0 +1,35 @@
+
+<template name="UnIngrediente">
+  <tr class="item" >
+    <td>{{cantidad}}</td>
+    <td>{{tipo}}</td>
+    <td>{{nombre}}</td>
+    <td>{{alternativos}}</td>
+    <td><button class="delete input-group-addon">&times;</button></td>
+  </tr>
+</template>
+
+
+<template name="UnPaso">
+  <tr class="item" >
+    <td>{{orden}}</td>
+    <td>{{accion}}</td>
+    <td>{{como}}</td>
+    <td>
+      <table class="table table-condensed table-striped">
+        <tbody>
+          {{#each ingredientes}}
+          <tr>
+            <td>{{cantidad}}</td>
+            <td>{{nombre}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </td>
+    <td>{{utensilios}}</td>
+    <td>{{tiempo}}</td>
+    <td>{{condicion}}</td>
+    <td><button class="delete input-group-addon">&times;</button></td>
+  </tr>
+</template>

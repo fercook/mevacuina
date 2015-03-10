@@ -1,0 +1,195 @@
+<template name="editView">
+
+{{#if editStep1}}
+
+  {{> edit1}}
+  <button class="continue1">Editar Ingredientes</button>
+  <button class="cancel">Cancelar</button>
+{{/if}}
+
+{{#if editStep2}}
+  {{> edit2}}
+  <button class="back2">Atras</button>
+  <button class="continue2">Continue</button>
+  <button class="cancel">Cancelar</button>
+{{/if}}
+
+{{#if editStep3}}
+   {{> edit3}}
+   <button class="back3">Atras</button>
+   <button class="continue3">Salvar</button>
+   <button class="cancel">Cancelar</button>
+{{/if}}
+
+{{#if editAllSteps}}
+  {{> edit1}}
+  {{> edit2}}
+  {{> edit3}}
+  <button class="continueAll">Salvar</button>
+  <button class="cancel">Cancelar</button>
+{{/if}}
+</template>
+
+
+
+<template name="edit1">
+  {{#with currentRecipe}}
+
+  <div class="form-group">
+    <div class="col-xs-6">
+      <label for="nombre_receta">Nombre de receta</label>
+      <input class="form-control" type="text" id="nombre_receta" value="{{nombre}}">
+    </div>
+    <div class="col-xs-6">
+      <label for="referencia">Referencia Bibliográfica </label>
+      <input class="form-control" type="text" id="referencia" value="{{referencia}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-6">
+      <label for="fecha_receta">Fecha </label>
+      <input class="form-control" type="text" id="fecha_receta" value="{{fecha}}">
+    </div>
+    <div class="col-xs-6">
+      <label for="zona_receta">Zona </label>
+      <input class="form-control" type="text" id="zona_receta" value="{{zona}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-4">
+      <label for="variante_receta">Variante de </label>
+      <input class="form-control" type="text" id="variante_receta" value="{{variante}}">
+    </div>
+    <div class="col-xs-4">
+      <label for="copia_receta">Copia de </label>
+      <input class="form-control" type="text" id="copia_receta" value="{{copia}}">
+    </div>
+    <div class="col-xs-4">
+      <label for="equivalentes">Equivalente (en otras lenguas) </label>
+      <input class="form-control" type="text" id="equivalentes" value="{{equivalentes}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-6">
+      <label for="propiedades_receta">Propiedades terapéuticas </label>
+      <input class="form-control" type="text" id="propiedades_receta" value="{{propiedades}}">
+    </div>
+    <div class="col-xs-6">
+      <label for="consumo_recomendado">Consumo recomendado</label>
+      <input class="form-control" type="text" id="consumo_recomendado" value="{{recomendacion}}">
+    </div>
+  </div>
+
+  {{/with}}
+</template>
+
+
+
+<template name="edit2">
+  <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th class="col-xs-1">Cantidad</th>
+        <th class="col-xs-2">Unidades</th>
+        <th class="col-xs-6">Ingrediente</th>
+        <th class="col-xs-3">Alternativos</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each currentRecipe.ingredientes}}
+      {{> UnIngrediente}}
+      {{/each}}
+      <tr>
+        <td><input class="form-control" type="text" id="ing_cantidad"></td>
+        <td><input class="form-control" type="text" id="ing_tipo"></td>
+        <td><input class="form-control" type="text" id="ing_nombre"></td>
+        <td><input class="form-control" type="text" id="ing_alternativos"></td>
+        <td>
+          <button class="add_ingredient">
+            +
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</template>
+
+
+
+<template name="edit3">
+  <h3>Procedimientos para {{currentRecipe.nombre}}</h3>
+  {{> Paso}}
+</template>
+
+<template name="Paso">
+  <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th class="col-xs-1">Orden</th>
+          <th class="col-xs-2">Acción</th>
+          <th class="col-xs-2">Descriptor</th>
+          <th class="col-xs-3">Ingredientes</th>
+          <th class="col-xs-2">Utensilios</th>
+          <th class="col-xs-1">Tiempo</th>
+          <th class="col-xs-1">Condición</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each currentRecipe.proceso}}
+          {{> UnPaso}}
+        {{/each}}
+        <tr>
+          <td>
+            <select class="form-control" id="paso_orden">
+              {{#each num_steps}}
+                <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </td>
+          <td><input class="form-control" type="text" id="paso_accion"></td>
+          <td><input class="form-control" type="text" id="paso_como"></td>
+          <td>
+            <table class="table table-condensed table-striped">
+              <tbody>
+                <tr>
+                  <th class="col-xs-4">Cantidad</th>
+                  <th class="col-xs-8">Ingrediente</th>
+                </tr>
+                {{#each newstep_ingredientes}}
+                  <tr>
+                    <td>{{cantidad}}</td>
+                    <td>{{nombre}}</td>
+                  </tr>
+                {{/each}}
+                <tr>
+                  <td>
+                    <input class="form-control" type="text" id="paso_cant_ingrediente">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" id="paso_nom_ingrediente">
+                  </td>
+                  <td>
+                    <button class="add_step_ingredient">
+                      +
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <input class="form-control" type="text" id="paso_utensilios">
+          </td>
+          <td><input class="form-control" type="text" id="paso_tiempo"></td>
+          <td><input class="form-control" type="text" id="paso_condicion"></td>
+          <td>
+            <button class="add_step">
+              +
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</template>
