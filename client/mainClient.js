@@ -1,9 +1,7 @@
 
 Session.set("viewRecipe", null);
-Session.set("editStep1",false);
-Session.set("editStep2",false);
-Session.set("editStep3",false);
-Session.set("editAllSteps",false);
+Session.set("editRecipe",false);
+Session.set("editField",false);
 
 
 /*Template.body.helpers({
@@ -23,6 +21,11 @@ Session.set("editAllSteps",false);
   }
 });
 */
+
+Template.registerHelper("printThing", function(thing) {
+ console.log("Thing: ");
+ console.log(thing);
+ });
 
 Template.registerHelper("currentRecipe", function (){
   return Recetas.findOne(Session.get("viewRecipe"));

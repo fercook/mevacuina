@@ -1,26 +1,35 @@
-Template.editView.helpers({
-  editStep1: function () {
-    return Session.get("editStep1");
-  },
-  editStep2: function () {
-    return Session.get("editStep2");
-  },
-  editStep3: function () {
-    return Session.get("editStep3");
-  },
-  editAllSteps: function() {
-    return Session.get("editAllSteps");
-  } /*,
-  ingredientesReceta: function () {
-    recipe_ID = Session.get("viewRecipe");
-    var theIngredients = Recetas.findOne(recipe_ID).ingredientes;
-    var idx=0;
-    theIngredients.forEach(function(d) {d.idx = idx; idx++;});
-    console.log(theIngredients);
-    return theIngredients;
-  }
-  */
+
+Template.editField.helpers({
+   editFieldOn: function(whichField) {
+      return Session.get("editField")==whichField;
+    },
+   printField: function(obj, fieldname) {
+     return obj[fieldname];
+    }
   });
+
+Template.editField.events({
+  "click .edit_field_button": function(event){
+    event.preventDefault();
+    console.log(this);
+    Session.set("editField", this.fieldDescriptor);
+    return false;
+  },
+  "click .confirm_field_button": function(event){
+    event.preventDefault();
+    var new_value =  document.getElementById('field_editor_'+this.fieldDescriptor);
+    var new_obj = {};
+    new_obj[this.fieldDescriptor]=new_value.value;
+    Recetas.update(this.receta._id, {$set: new_obj });
+    Session.set("editField", null);
+    return false;
+  },
+  "click .cancel_field_button": function(event){
+    event.preventDefault();
+    Session.set("editField", null);
+    return false;
+  }
+});
 
 
   Template.editView.rendered = function () {
@@ -31,14 +40,12 @@ Template.editView.helpers({
 
 
 Template.editView.events({
-/*
-  "submit form": function(event){
+  "click .selectable": function(event){
     event.preventDefault();
-    event.stopPropagation();
-    console.log(event.type);
+    console.log(this);
     return false;
   },
-*/
+
   'keyup input': function(e) {
     // Would be nice if enter moves focus to next input box
     if (e.keyCode === 13) {
@@ -84,13 +91,6 @@ Template.editView.events({
     return false;
   },
 
-  "click .back2": function(event) {
-    event.preventDefault();
-    Session.set("editStep1", true);
-    Session.set("editStep2", false);
-    return false;
-  },
-
   "click .back3": function(event) {
     event.preventDefault();
     Session.set("editStep1", false);
@@ -99,12 +99,6 @@ Template.editView.events({
     return false;
   },
 
-  "click .continue2": function(event) {
-    event.preventDefault();
-    Session.set("editStep2", false);
-    Session.set("editStep3", true);
-    return false;
-  },
 
   "click .continue3": function(event) {
     event.preventDefault();
@@ -166,38 +160,15 @@ Template.editView.events({
 
 });
 
-function collectGeneralData(){
-  recipe_ID = Session.get("viewRecipe");
-  var nombre = document.getElementById("nombre_receta");
-  var referencia = document.getElementById("referencia");
-  var fecha = document.getElementById("fecha_receta");
-  var zona = document.getElementById("zona_receta");
-  var variante = document.getElementById("variante_receta");
-  var copia = document.getElementById("copia_receta");
-  var equivalentes = document.getElementById("equivalentes");
-  var propiedades = document.getElementById("propiedades_receta");
-  var consumo = document.getElementById("consumo_recomendado");
-  Recetas.update(recipe_ID, {$set: {
-    "nombre": nombre.value,
-    "referencia": referencia.value,
-    "fecha": fecha.value,
-    "zona": zona.value,
-    "variante": variante.value,
-    "copia": copia.value,
-    "equivalentes": equivalentes.value,
-    "propiedades": propiedades.value,
-    "consumo": consumo.value
-  }
-  });
-  return true;
-}
 
 
 
 Template.UnIngrediente.events({
   "click .item": function(event) {
-
+    console.log(this);
+    console.log(this.index);
   },
+
   "click .delete": function(event) {
     recipe_ID = Session.get("viewRecipe");
     Recetas.update(recipe_ID,
@@ -210,6 +181,15 @@ Template.UnIngrediente.events({
   }
 });
 
+Template.UnIngrediente.helpers({
+  Placeholder: function(field, alttext) {
+    return !field ? alttext : field;
+  },
+  Format: function(field) {
+    return !field ? {class: "italic"} : {class: ""};
+  }
+
+});
 
 Template.Paso.helpers(
 {
@@ -309,3 +289,73 @@ Template.Paso.events({
   }
 
 })
+
+
+
+//$.fn.editable.defaults.mode = 'inline';
+/*
+Template.editable.helpers({
+  Anything: function(something) {
+    console.log(something);
+    return something? "false" : "true";
+  }
+});
+
+Template.editable.rendered = function(){
+   $('#editName.editable').editable({
+     placement: "auto top",
+     success: function(response, newValue) {
+       console.log('set new value to ' + newValue);
+
+       recipe_ID = Session.get("viewRecipe");
+
+       Recetas.update(recipe_ID, {$set: {
+         "nombre": newValue
+       }
+       });
+   }});
+   $('#editReferencia.editable').editable({
+     placement: "auto top",
+     success: function(response, newValue) {
+       console.log('set new value to ' + newValue);
+
+       recipe_ID = Session.get("viewRecipe");
+
+       Recetas.update(recipe_ID, {$set: {
+         "referencia": newValue
+       }
+       });
+       return " ";
+   }
+   });
+ };
+
+
+ function collectGeneralData(){
+   recipe_ID = Session.get("viewRecipe");
+   var nombre = document.getElementById("nombre_receta");
+   var referencia = document.getElementById("referencia");
+   var fecha = document.getElementById("fecha_receta");
+   var zona = document.getElementById("zona_receta");
+   var variante = document.getElementById("variante_receta");
+   var copia = document.getElementById("copia_receta");
+   var equivalentes = document.getElementById("equivalentes");
+   var propiedades = document.getElementById("propiedades_receta");
+   var consumo = document.getElementById("consumo_recomendado");
+   Recetas.update(recipe_ID, {$set: {
+     "nombre": nombre.value,
+     "referencia": referencia.value,
+     "fecha": fecha.value,
+     "zona": zona.value,
+     "variante": variante.value,
+     "copia": copia.value,
+     "equivalentes": equivalentes.value,
+     "propiedades": propiedades.value,
+     "consumo": consumo.value
+   }
+   });
+   return true;
+ }
+
+
+ */

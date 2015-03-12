@@ -1,86 +1,113 @@
 <template name="editView">
-
-{{#if editStep1}}
-
-  {{> edit1}}
-  <button class="continue1">Editar Ingredientes</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editStep2}}
-  {{> edit2}}
-  <button class="back2">Atras</button>
-  <button class="continue2">Continue</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editStep3}}
-   {{> edit3}}
-   <button class="back3">Atras</button>
-   <button class="continue3">Salvar</button>
-   <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editAllSteps}}
-  {{> edit1}}
-  {{> edit2}}
-  {{> edit3}}
-  <button class="continueAll">Salvar</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
+  {{> edit}}
+  <button class="SaveAll">Save</button>
+  <button class="Cancel">Cancel</button>
 </template>
 
 
+<template name="editField">
+  {{#if editFieldOn fieldDescriptor}}
+    <div class="container">
+      <div class="col-xs-2">
+        <label>{{fieldLabel}}</label>
+      </div>
+      <div class="form-group col-xs-8">
+          <input class="form-control" type="text" id="field_editor_{{fieldDescriptor}}" value="{{printField this.receta fieldDescriptor}}">
+          <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-remove"></span>
+          </a>
+          <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-ok"></span>
+          </a>
+    </div>
+    </div>
+  {{else}}
+    <div class="container">
+      <div class="col-xs-2">
+        <label>{{fieldLabel}}</label>
+      </div>
+      <div class="col-xs-8">
+        <span class="text selectable">
+        {{printField this.receta fieldDescriptor}}
+      </span>
+      </div>
+      <div class="col-xs-2">
+          <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-edit"></span>
+          </a>
+      </div>
+    </div>
+  {{/if}}
 
-<template name="edit1">
+</template>
+
+<template name="edit">
   {{#with currentRecipe}}
+    <div class="container">
+      <div class="jumbotron">
+        <h2>
+        {{> editField fieldLabel="" fieldDescriptor="nombre" receta=this}}
+        </h2>
+      </div>
+    </div>
 
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="nombre_receta">Nombre de receta</label>
-      <input class="form-control" type="text" id="nombre_receta" value="{{nombre}}">
+    {{> editField fieldLabel="Bibliographic Reference" fieldDescriptor="referencia" receta=this}}
+    {{> editField fieldLabel="Date" fieldDescriptor="fecha" receta=this}}
+    {{> editField fieldLabel="Region" fieldDescriptor="zona" receta=this}}
+    {{> editField fieldLabel="Variant of" fieldDescriptor="variante" receta=this}}
+    {{> editField fieldLabel="Copy of" fieldDescriptor="copia" receta=this}}
+    {{> editField fieldLabel="Equivalent (in other languages)" fieldDescriptor="equivalentes" receta=this}}
+    {{> editField fieldLabel="Recommended consumption, yield,..." fieldDescriptor="recomendacion" receta=this}}
+
+    <div class="container">
+      <div class="lead">
+        Ingredients
+      </div>
     </div>
-    <div class="col-xs-6">
-      <label for="referencia">Referencia Bibliográfica </label>
-      <input class="form-control" type="text" id="referencia" value="{{referencia}}">
+    <div class="container">
+      <table class="table table-hover">
+        <tbody>
+          {{#each  currentRecipe.ingredientes}}
+            <tr>
+              {{> UnIngrediente}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="fecha_receta">Fecha </label>
-      <input class="form-control" type="text" id="fecha_receta" value="{{fecha}}">
+    <div class="container">
+      <form class="navbar-form navbar-left new-ingredient" role="add">
+        <div class="form-group">
+          <input type="text" class="form-control" id="ing_nombre" placeholder="New ingredient name">
+        </div>
+        <button type="submit" class="btn btn-default btn-primary">Add</button>
+      </form>
     </div>
-    <div class="col-xs-6">
-      <label for="zona_receta">Zona </label>
-      <input class="form-control" type="text" id="zona_receta" value="{{zona}}">
+
+
+    <div class="container">
+      <div class="lead">
+        Steps
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-4">
-      <label for="variante_receta">Variante de </label>
-      <input class="form-control" type="text" id="variante_receta" value="{{variante}}">
-    </div>
-    <div class="col-xs-4">
-      <label for="copia_receta">Copia de </label>
-      <input class="form-control" type="text" id="copia_receta" value="{{copia}}">
-    </div>
-    <div class="col-xs-4">
-      <label for="equivalentes">Equivalente (en otras lenguas) </label>
-      <input class="form-control" type="text" id="equivalentes" value="{{equivalentes}}">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="propiedades_receta">Propiedades terapéuticas </label>
-      <input class="form-control" type="text" id="propiedades_receta" value="{{propiedades}}">
-    </div>
-    <div class="col-xs-6">
-      <label for="consumo_recomendado">Consumo recomendado</label>
-      <input class="form-control" type="text" id="consumo_recomendado" value="{{recomendacion}}">
-    </div>
-  </div>
 
   {{/with}}
+</template>
+
+
+<template name="UnIngrediente">
+  <span class="item">
+    <span {{Format cantidad}}>{{Placeholder cantidad "Qty."}}</span>
+    &nbsp;
+    <span {{Format tipo}}>{{Placeholder tipo "units"}}</span>
+    of
+    <span {{Format nombre}}>{{nombre}}</span>
+    (alternative:
+    <span {{Format alternativos}}>{{Placeholder alternativos "none"}}</span>)
+    <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
+      <span class="glyphicon glyphicon-edit"></span>
+    </a>
+  </span>
 </template>
 
 
