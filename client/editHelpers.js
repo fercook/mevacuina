@@ -125,9 +125,9 @@ Template.editView.events({
          ingredientes:  {
            "ID_ingrediente": ingredient_ID,
            "nombre": nombre.value,
-           "tipo": null,
-           "cantidad": null,
-           "alternativos": null,
+           "tipo": "",
+           "cantidad": "",
+           "alternativos": "",
            createdAt: new Date()
            }
          }});
@@ -156,27 +156,32 @@ Template.UnIngrediente.events({
     var new_tipo =  document.getElementById('ing_editor_units_'+this.index);
     var new_alternativos =  document.getElementById('ing_editor_alt_'+this.index);
     var ingredient_ID = Ingredientes.findOne({"nombre": new_name.value});
+    console.log("EDITANDO");
+    console.log(ingredient_ID);
+    console.log("A ver");
     if (! ingredient_ID) {
       ingredient_ID = Ingredientes.insert({
         "nombre": new_name.value,
         createdAt: new Date()
       });
     }
+    console.log(ingredient_ID);
+    console.log("Por fin");
+    var new_values = {
+      "ID_ingrediente": ingredient_ID,
+      "nombre": new_name.value,
+      "tipo": new_tipo.value,
+      "cantidad": new_qty.value,
+      "alternativos": new_alternativos.value,
+      createdAt: new Date()
+      };
     var recipe_ID = Session.get("viewRecipe");
-    var currentValues = this.value;
-    Recetas.update(
-      {_id: recipe_ID, ingredientes: currentValues},
-       {$set: {
-         ingredientes:  {
-           "ID_ingrediente": ingredient_ID,
-           "nombre": new_name.value,
-           "tipo": new_tipo.value,
-           "cantidad": new_qty.value,
-           "alternativos": new_alternativos.value,
-           createdAt: new Date()
-           }
-      } }
-    );
+    var current_values = this.value;
+    console.log(recipe_ID);
+    console.log(current_values);
+    console.log(new_values);
+    console.log("Passing over to method");
+    Meteor.call ("replaceIngredient", recipe_ID, current_values,new_values);
     //Clean up
     new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
     Session.set("editField", null);

@@ -119,8 +119,11 @@
     <span {{Format value.nombre}}>{{value.nombre}}</span>
     (alternative:
     <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
-    <a class="btn btn-default edit_field_button" href="#" role="button">
+    <a class="btn btn-default btn-xs edit_field_button" href="#" role="button">
       <span class="glyphicon glyphicon-edit"></span>
+    </a>
+    <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
+      <span class="glyphicon glyphicon-remove"></span>
     </a>
   </span>
   {{/if}}
