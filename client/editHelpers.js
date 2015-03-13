@@ -143,30 +143,26 @@ Template.UnIngrediente.events({
     return false;
   },
 
-  "click .edit_field_button": function(event){
+  "click .edit_ing_button": function(event){
     event.preventDefault();
     Session.set("editField", this.index);
     return false;
   },
 
-  "click .confirm_field_button": function(event){
+  "click .confirm_ing_button": function(event){
     event.preventDefault();
     var new_qty =  document.getElementById('ing_editor_qty_'+this.index);
     var new_name =  document.getElementById('ing_editor_name_'+this.index);
     var new_tipo =  document.getElementById('ing_editor_units_'+this.index);
     var new_alternativos =  document.getElementById('ing_editor_alt_'+this.index);
     var ingredient_ID = Ingredientes.findOne({"nombre": new_name.value});
-    console.log("EDITANDO");
-    console.log(ingredient_ID);
-    console.log("A ver");
     if (! ingredient_ID) {
       ingredient_ID = Ingredientes.insert({
         "nombre": new_name.value,
         createdAt: new Date()
       });
     }
-    console.log(ingredient_ID);
-    console.log("Por fin");
+    var current_values = this.value;
     var new_values = {
       "ID_ingrediente": ingredient_ID,
       "nombre": new_name.value,
@@ -176,19 +172,21 @@ Template.UnIngrediente.events({
       createdAt: new Date()
       };
     var recipe_ID = Session.get("viewRecipe");
-    var current_values = this.value;
-    console.log(recipe_ID);
-    console.log(current_values);
-    console.log(new_values);
-    console.log("Passing over to method");
-    Meteor.call ("replaceIngredient", recipe_ID, current_values,new_values);
+    new_ingredientes = Recetas.findOne(recipe_ID).ingredientes;
+    new_ingredientes[this.index]=new_values;
+    Recetas.update(recipe_ID,
+       {$set: {
+         ingredientes:  new_ingredientes
+       }});
+// DOES NOT WORK!?!?
+//    Meteor.call ("replaceIngredient", recipe_ID, current_values,new_values);
     //Clean up
     new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
     Session.set("editField", null);
     return false;
   },
 
-  "click .cancel_field_button": function(event){
+  "click .cancel_ing_button": function(event){
     event.preventDefault();
     //Clean up
   //  new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";

@@ -4,43 +4,6 @@
   <button class="Cancel">Cancel</button>
 </template>
 
-
-<template name="editField">
-  {{#if editFieldOn fieldDescriptor}}
-    <div class="container">
-      <div class="col-xs-2">
-        <label>{{fieldLabel}}</label>
-      </div>
-      <div class="form-group col-xs-8">
-          <input class="form-control" type="text" id="field_editor_{{fieldDescriptor}}" value="{{printField this.receta fieldDescriptor}}">
-          <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-remove"></span>
-          </a>
-          <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-ok"></span>
-          </a>
-    </div>
-    </div>
-  {{else}}
-    <div class="container">
-      <div class="col-xs-2">
-        <label>{{fieldLabel}}</label>
-      </div>
-      <div class="col-xs-8">
-        <span class="text selectable">
-        {{printField this.receta fieldDescriptor}}
-      </span>
-      </div>
-      <div class="col-xs-2">
-          <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-edit"></span>
-          </a>
-      </div>
-    </div>
-  {{/if}}
-
-</template>
-
 <template name="edit">
   {{#with currentRecipe}}
     <div class="container">
@@ -96,6 +59,46 @@
 </template>
 
 
+
+
+<template name="editField">
+  {{#if editFieldOn fieldDescriptor}}
+    <div class="container">
+      <div class="col-xs-2">
+        <label>{{fieldLabel}}</label>
+      </div>
+      <div class="form-group col-xs-8">
+          <input class="form-control" type="text" id="field_editor_{{fieldDescriptor}}" value="{{printField this.receta fieldDescriptor}}">
+          <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-remove"></span>
+          </a>
+          <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-ok"></span>
+          </a>
+    </div>
+    </div>
+  {{else}}
+    <div class="container">
+      <div class="col-xs-2">
+        <label>{{fieldLabel}}</label>
+      </div>
+      <div class="col-xs-8">
+        <span class="text selectable">
+        {{printField this.receta fieldDescriptor}}
+      </span>
+      </div>
+      <div class="col-xs-2">
+          <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
+            <span class="glyphicon glyphicon-edit"></span>
+          </a>
+      </div>
+    </div>
+  {{/if}}
+
+</template>
+
+
+
 <template name="UnIngrediente">
   {{#if editFieldOn index}}
   <div class="form-group">
@@ -103,10 +106,10 @@
       <input class="form-control" type="text" id="ing_editor_units_{{index}}" value="{{value.tipo}}" placeholder="Units">
       <input class="form-control" type="text" id="ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
       <input class="form-control" type="text" id="ing_editor_alt_{{index}}" value="{{value.alternativos}}" placeholder="Alternatives">
-      <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
+      <a class="btn btn-default pull-right cancel_ing_button" href="#" role="button">
         <span class="glyphicon glyphicon-remove"></span>
       </a>
-      <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
+      <a class="btn btn-primary btn-default pull-right confirm_ing_button" href="#" role="button">
         <span class="glyphicon glyphicon-ok"></span>
       </a>
   </div>
@@ -117,14 +120,17 @@
     <span {{Format value.tipo}}>{{Placeholder value.tipo "units"}}</span>
     of
     <span {{Format value.nombre}}>{{value.nombre}}</span>
-    (alternative:
-    <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
-    <a class="btn btn-default btn-xs edit_field_button" href="#" role="button">
+    {{#if value.alternativos}}
+      (alternative:
+      <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
+    {{/if}}
+    <a class="btn btn-default btn-xs edit_ing_button" href="#" role="button">
       <span class="glyphicon glyphicon-edit"></span>
     </a>
     <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
       <span class="glyphicon glyphicon-remove"></span>
     </a>
+
   </span>
   {{/if}}
 
