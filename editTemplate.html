@@ -67,7 +67,8 @@
     <div class="container">
       <table class="table table-hover">
         <tbody>
-          {{#each  currentRecipe.ingredientes}}
+
+          {{#each IndexedList currentRecipe.ingredientes}}
             <tr>
               {{> UnIngrediente}}
             </tr>
@@ -80,7 +81,7 @@
         <div class="form-group">
           <input type="text" class="form-control" id="ing_nombre" placeholder="New ingredient name">
         </div>
-        <button type="submit" class="btn btn-default btn-primary">Add</button>
+        <button type="submit" class="btn btn-default btn-primary add_ingredient">Add</button>
       </form>
     </div>
 
@@ -96,52 +97,37 @@
 
 
 <template name="UnIngrediente">
+  {{#if editFieldOn index}}
+  <div class="form-group">
+      <input class="form-control" type="text" id="ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
+      <input class="form-control" type="text" id="ing_editor_units_{{index}}" value="{{value.tipo}}" placeholder="Units">
+      <input class="form-control" type="text" id="ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
+      <input class="form-control" type="text" id="ing_editor_alt_{{index}}" value="{{value.alternativos}}" placeholder="Alternatives">
+      <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+      <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+  </div>
+  {{else}}
   <span class="item">
-    <span {{Format cantidad}}>{{Placeholder cantidad "Qty."}}</span>
+    <span {{Format value.cantidad}}>{{Placeholder value.cantidad "Qty."}}</span>
     &nbsp;
-    <span {{Format tipo}}>{{Placeholder tipo "units"}}</span>
+    <span {{Format value.tipo}}>{{Placeholder value.tipo "units"}}</span>
     of
-    <span {{Format nombre}}>{{nombre}}</span>
+    <span {{Format value.nombre}}>{{value.nombre}}</span>
     (alternative:
-    <span {{Format alternativos}}>{{Placeholder alternativos "none"}}</span>)
-    <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
+    <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
+    <a class="btn btn-default edit_field_button" href="#" role="button">
       <span class="glyphicon glyphicon-edit"></span>
     </a>
   </span>
-</template>
-
-
-
-<template name="edit2">
-  <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
-  <table class="table table-condensed table-striped">
-    <thead>
-      <tr>
-        <th class="col-xs-1">Cantidad</th>
-        <th class="col-xs-2">Unidades</th>
-        <th class="col-xs-6">Ingrediente</th>
-        <th class="col-xs-3">Alternativos</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each currentRecipe.ingredientes}}
-      {{> UnIngrediente}}
-      {{/each}}
-      <tr>
-        <td><input class="form-control" type="text" id="ing_cantidad"></td>
-        <td><input class="form-control" type="text" id="ing_tipo"></td>
-        <td><input class="form-control" type="text" id="ing_nombre"></td>
-        <td><input class="form-control" type="text" id="ing_alternativos"></td>
-        <td>
-          <button class="add_ingredient">
-            +
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  {{/if}}
 
 </template>
+
+
 
 
 
@@ -220,3 +206,39 @@
       </tbody>
     </table>
 </template>
+
+
+<!--
+
+<template name="edit2">
+  <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th class="col-xs-1">Cantidad</th>
+        <th class="col-xs-2">Unidades</th>
+        <th class="col-xs-6">Ingrediente</th>
+        <th class="col-xs-3">Alternativos</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each currentRecipe.ingredientes}}
+      {{> UnIngrediente}}
+      {{/each}}
+      <tr>
+        <td><input class="form-control" type="text" id="ing_cantidad"></td>
+        <td><input class="form-control" type="text" id="ing_tipo"></td>
+        <td><input class="form-control" type="text" id="ing_nombre"></td>
+        <td><input class="form-control" type="text" id="ing_alternativos"></td>
+        <td>
+          <button class="add_ingredient">
+            +
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</template>
+
+-->

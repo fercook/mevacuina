@@ -1,8 +1,5 @@
 
 Template.editField.helpers({
-   editFieldOn: function(whichField) {
-      return Session.get("editField")==whichField;
-    },
    printField: function(obj, fieldname) {
      return obj[fieldname];
     }
@@ -83,31 +80,14 @@ Template.editView.events({
       //filter: { 'gender': 'female' }}); // Additional filtering
     },
 
-  "click .continue1": function(event) {
+  "click .back": function(event) {
     event.preventDefault();
-    collectGeneralData();
-    Session.set("editStep1", false);
-    Session.set("editStep2", true);
-    return false;
-  },
-
-  "click .back3": function(event) {
-    event.preventDefault();
-    Session.set("editStep1", false);
-    Session.set("editStep2", true);
-    Session.set("editStep3", false);
-    return false;
-  },
-
-
-  "click .continue3": function(event) {
-    event.preventDefault();
-    Session.set("editStep3", false);
-    Session.set("editAllSteps",false);
+    Session.set("editStep", false);
     Session.set("viewRecipe", null);
     Session.set("temp_ingredients", [])
     return false;
   },
+
 
   "click .continueAll": function(event) {
     event.preventDefault();
@@ -130,11 +110,8 @@ Template.editView.events({
     return false;
   },
 
-  "click .add_ingredient": function(event) {
-    var cantidad = document.getElementById('ing_cantidad');
-    var tipo = document.getElementById('ing_tipo');
+  "click .add_ingredient": function(event) { ////ACA HERE TODO
     var nombre = document.getElementById('ing_nombre');
-    var alternativos = document.getElementById('ing_alternativos');
     ingredient_ID = Ingredientes.findOne({"nombre": nombre.value});
     if (! ingredient_ID) {
       ingredient_ID = Ingredientes.insert({
@@ -148,35 +125,80 @@ Template.editView.events({
          ingredientes:  {
            "ID_ingrediente": ingredient_ID,
            "nombre": nombre.value,
-           "tipo": tipo.value,
-           "cantidad": +cantidad.value,
-           "alternativos": alternativos.value,
+           "tipo": null,
+           "cantidad": null,
+           "alternativos": null,
            createdAt: new Date()
            }
          }});
-    cantidad.value=""; tipo.value=""; nombre.value=""; alternativos.value="";
+    nombre.value="";
     return false;
   }
-
 });
-
-
 
 
 Template.UnIngrediente.events({
   "click .item": function(event) {
-    console.log(this);
-    console.log(this.index);
+    Session.set("editField", this.index);
+    return false;
+  },
+
+  "click .edit_field_button": function(event){
+    event.preventDefault();
+    Session.set("editField", this.index);
+    return false;
+  },
+
+  "click .confirm_field_button": function(event){
+    event.preventDefault();
+    var new_qty =  document.getElementById('ing_editor_qty_'+this.index);
+    var new_name =  document.getElementById('ing_editor_name_'+this.index);
+    var new_tipo =  document.getElementById('ing_editor_units_'+this.index);
+    var new_alternativos =  document.getElementById('ing_editor_alt_'+this.index);
+    var ingredient_ID = Ingredientes.findOne({"nombre": new_name.value});
+    if (! ingredient_ID) {
+      ingredient_ID = Ingredientes.insert({
+        "nombre": new_name.value,
+        createdAt: new Date()
+      });
+    }
+    var recipe_ID = Session.get("viewRecipe");
+    var currentValues = this.value;
+    Recetas.update(
+      {_id: recipe_ID, ingredientes: currentValues},
+       {$set: {
+         ingredientes:  {
+           "ID_ingrediente": ingredient_ID,
+           "nombre": new_name.value,
+           "tipo": new_tipo.value,
+           "cantidad": new_qty.value,
+           "alternativos": new_alternativos.value,
+           createdAt: new Date()
+           }
+      } }
+    );
+    //Clean up
+    new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
+    Session.set("editField", null);
+    return false;
+  },
+
+  "click .cancel_field_button": function(event){
+    event.preventDefault();
+    //Clean up
+  //  new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
+    Session.set("editField", null);
+    return false;
   },
 
   "click .delete": function(event) {
     recipe_ID = Session.get("viewRecipe");
     Recetas.update(recipe_ID,
     {$pull: {ingredientes:
-      {alternativos: this.alternativos,
-        cantidad: this.cantidad,
-        nombre: this.nombre,
-        tipo: this.tipo
+      {alternativos: this.value.alternativos,
+        cantidad: this.value.cantidad,
+        nombre: this.value.nombre,
+        tipo: this.value.tipo
       }}});
   }
 });
@@ -188,7 +210,6 @@ Template.UnIngrediente.helpers({
   Format: function(field) {
     return !field ? {class: "italic"} : {class: ""};
   }
-
 });
 
 Template.Paso.helpers(
