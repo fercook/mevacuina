@@ -23,7 +23,6 @@ Template.UnPaso.events({
   "click .add_step_ingredient": function(event){
     event.preventDefault();
     var nombre = document.getElementById('step_ing_nombre');
-    console.log(nombre);
     var ingredient_ID = Ingredientes.findOne({"nombre": nombre.value});
     if (! ingredient_ID) {
       ingredient_ID = Ingredientes.insert({
@@ -32,7 +31,7 @@ Template.UnPaso.events({
       });
     }
     var recipe_ID = Session.get("viewRecipe");
-    var proceso =  Recetas.findOne(recipe_ID).proceso;
+    var proceso =  Recetas.findOne(recipe_ID).proceso; ////
     // I think this.index is the index for the step
     proceso[this.index].ingredientes.push( {
       "ID_ingrediente": ingredient_ID,
@@ -55,7 +54,6 @@ Template.UnPaso.events({
     var new_utensilios =  document.getElementById('step_editor_utensilios_'+this.index);
     var new_tiempo =  document.getElementById('step_editor_tiempo_'+this.index);
     var new_order =  document.getElementById('paso_orden_'+this.index);
-    console.log(new_order);
     process_ID = Procedimientos.findOne({"nombre": new_accion.value});
     if (! process_ID) {
       process_ID = Procedimientos.insert({
@@ -65,7 +63,7 @@ Template.UnPaso.events({
     }
     var recipe_ID = Session.get("viewRecipe");
     var new_process = Recetas.findOne(recipe_ID).proceso;
-    var new_ingredientes = new_process.ingredientes;
+    var new_ingredientes = new_process[this.index].ingredientes; //TODO Indexar el proceso
     var max_step = max_steps(new_process);
     new_process[this.index] =       {
             "ID_proceso": process_ID,

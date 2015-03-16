@@ -35,15 +35,11 @@ Template.UnIngrediente.events({
       };
     var recipe_ID = Session.get("viewRecipe");
     new_ingredientes = Recetas.findOne(recipe_ID).ingredientes;
-    console.log("ings "+this.index);
-    console.log(new_values);
-    console.log(new_ingredientes);
     new_ingredientes[this.index]=new_values;
     Recetas.update(recipe_ID,
        {$set: {
          ingredientes:  new_ingredientes
        }});
-       console.log(new_ingredientes);
 // DOES NOT WORK!?!?
 //    Meteor.call ("replaceIngredient", recipe_ID, current_values,new_values);
     //Clean up

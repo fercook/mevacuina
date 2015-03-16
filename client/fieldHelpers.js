@@ -8,7 +8,6 @@ Template.editField.helpers({
 Template.editField.events({
   "click .edit_field_button": function(event){
     event.preventDefault();
-    console.log(this);
     Session.set("editField", this.fieldDescriptor);
     return false;
   },

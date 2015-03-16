@@ -67,24 +67,25 @@ Template.editView.events({
   },
 
 
-  "click .continueAll": function(event) {
+  "click .continue": function(event) {
     event.preventDefault();
-    collectGeneralData();
-    Session.set("editStep3", false);
-    Session.set("editAllSteps",false);
+    Session.set("editStepIngredient", false);
+    Session.set("editStep", false);
+    Session.set("editIngredient", false);
+    Session.set("editField", false);
+    Session.set("editRecipe",false);
     Session.set("viewRecipe", null);
-    Session.set("temp_ingredients", [])
     return false;
   },
 
   "click .cancel": function(event){
     event.preventDefault();
-    Session.set("editStep1", false);
-    Session.set("editStep2", false);
-    Session.set("editStep3", false);
-    Session.set("editAllSteps",false);
+    Session.set("editStepIngredient", false);
+    Session.set("editStep", false);
+    Session.set("editIngredient", false);
+    Session.set("editField", false);
+    Session.set("editRecipe",false);
     Session.set("viewRecipe", null);
-    Session.set("temp_ingredients", [])
     return false;
   },
 
@@ -126,9 +127,7 @@ Template.editView.events({
     }
     recipe_ID = Session.get("viewRecipe");
     var proceso = Recetas.findOne(recipe_ID).proceso;
-    console.log(proceso);
     var max_step = max_steps(proceso);
-    console.log(max_step);
     Recetas.update(recipe_ID,
     {$push: {
       proceso:  {
