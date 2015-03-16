@@ -1,0 +1,34 @@
+<template name="UnIngrediente">
+  {{#if editIngredientOn index}}
+  <div class="form-group">
+      <input class="form-control" type="text" id="ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
+      <input class="form-control" type="text" id="ing_editor_units_{{index}}" value="{{value.tipo}}" placeholder="Units">
+      <input class="form-control" type="text" id="ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
+      <input class="form-control" type="text" id="ing_editor_alt_{{index}}" value="{{value.alternativos}}" placeholder="Alternatives">
+      <a class="btn btn-default pull-right cancel_ing_button" href="#" role="button">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+      <a class="btn btn-primary btn-default pull-right confirm_ing_button" href="#" role="button">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+  </div>
+  {{else}}
+  <span class="item">
+    <span {{Format value.cantidad}}>{{Placeholder value.cantidad "Qty."}}</span>
+    &nbsp;
+    <span {{Format value.tipo}}>{{Placeholder value.tipo "units"}}</span>
+    of
+    <span {{Format value.nombre}}>{{value.nombre}}</span>
+    {{#if value.alternativos}}
+      (alternative:
+      <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
+    {{/if}}
+    <a class="btn btn-default btn-xs edit_ing_button" href="#" role="button">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+  </span>
+  {{/if}}
+</template>

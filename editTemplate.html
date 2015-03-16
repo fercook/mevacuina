@@ -55,95 +55,68 @@
       </div>
     </div>
 
+    <div class="container">
+      <table class="table table-hover">
+        <tbody>
+
+          {{#each IndexedList currentRecipe.proceso}}
+            <tr>
+              {{> UnPaso}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container">
+      <form class="navbar-form navbar-left new-step" role="add">
+        <div class="form-group">
+          <input type="text" class="form-control" id="step_action" placeholder="New step (action or verb))">
+        </div>
+        <button type="submit" class="btn btn-default btn-primary add_step">Add</button>
+      </form>
+    </div>
+
   {{/with}}
 </template>
 
 
 
 
-<template name="editField">
-  {{#if editFieldOn fieldDescriptor}}
-    <div class="container">
-      <div class="col-xs-2">
-        <label>{{fieldLabel}}</label>
-      </div>
-      <div class="form-group col-xs-8">
-          <input class="form-control" type="text" id="field_editor_{{fieldDescriptor}}" value="{{printField this.receta fieldDescriptor}}">
-          <a class="btn btn-default pull-right cancel_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-remove"></span>
-          </a>
-          <a class="btn btn-primary btn-default pull-right confirm_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-ok"></span>
-          </a>
-    </div>
-    </div>
-  {{else}}
-    <div class="container">
-      <div class="col-xs-2">
-        <label>{{fieldLabel}}</label>
-      </div>
-      <div class="col-xs-8">
-        <span class="text selectable">
-        {{printField this.receta fieldDescriptor}}
-      </span>
-      </div>
-      <div class="col-xs-2">
-          <a class="btn btn-default pull-right edit_field_button" href="#" role="button">
-            <span class="glyphicon glyphicon-edit"></span>
-          </a>
-      </div>
-    </div>
-  {{/if}}
+<!--
+
+<template name="edit2">
+  <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th class="col-xs-1">Cantidad</th>
+        <th class="col-xs-2">Unidades</th>
+        <th class="col-xs-6">Ingrediente</th>
+        <th class="col-xs-3">Alternativos</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each currentRecipe.ingredientes}}
+      {{> UnIngrediente}}
+      {{/each}}
+      <tr>
+        <td><input class="form-control" type="text" id="ing_cantidad"></td>
+        <td><input class="form-control" type="text" id="ing_tipo"></td>
+        <td><input class="form-control" type="text" id="ing_nombre"></td>
+        <td><input class="form-control" type="text" id="ing_alternativos"></td>
+        <td>
+          <button class="add_ingredient">
+            +
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </template>
 
 
-
-<template name="UnIngrediente">
-  {{#if editFieldOn index}}
-  <div class="form-group">
-      <input class="form-control" type="text" id="ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
-      <input class="form-control" type="text" id="ing_editor_units_{{index}}" value="{{value.tipo}}" placeholder="Units">
-      <input class="form-control" type="text" id="ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
-      <input class="form-control" type="text" id="ing_editor_alt_{{index}}" value="{{value.alternativos}}" placeholder="Alternatives">
-      <a class="btn btn-default pull-right cancel_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-remove"></span>
-      </a>
-      <a class="btn btn-primary btn-default pull-right confirm_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-ok"></span>
-      </a>
-  </div>
-  {{else}}
-  <span class="item">
-    <span {{Format value.cantidad}}>{{Placeholder value.cantidad "Qty."}}</span>
-    &nbsp;
-    <span {{Format value.tipo}}>{{Placeholder value.tipo "units"}}</span>
-    of
-    <span {{Format value.nombre}}>{{value.nombre}}</span>
-    {{#if value.alternativos}}
-      (alternative:
-      <span {{Format value.alternativos}}>{{Placeholder value.alternativos "none"}}</span>)
-    {{/if}}
-    <a class="btn btn-default btn-xs edit_ing_button" href="#" role="button">
-      <span class="glyphicon glyphicon-edit"></span>
-    </a>
-    <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
-      <span class="glyphicon glyphicon-remove"></span>
-    </a>
-
-  </span>
-  {{/if}}
-
-</template>
-
-
-
-
-
-<template name="edit3">
-  <h3>Procedimientos para {{currentRecipe.nombre}}</h3>
-  {{> Paso}}
-</template>
 
 <template name="Paso">
   <table class="table table-condensed table-striped">
@@ -217,37 +190,5 @@
 </template>
 
 
-<!--
-
-<template name="edit2">
-  <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
-  <table class="table table-condensed table-striped">
-    <thead>
-      <tr>
-        <th class="col-xs-1">Cantidad</th>
-        <th class="col-xs-2">Unidades</th>
-        <th class="col-xs-6">Ingrediente</th>
-        <th class="col-xs-3">Alternativos</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each currentRecipe.ingredientes}}
-      {{> UnIngrediente}}
-      {{/each}}
-      <tr>
-        <td><input class="form-control" type="text" id="ing_cantidad"></td>
-        <td><input class="form-control" type="text" id="ing_tipo"></td>
-        <td><input class="form-control" type="text" id="ing_nombre"></td>
-        <td><input class="form-control" type="text" id="ing_alternativos"></td>
-        <td>
-          <button class="add_ingredient">
-            +
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</template>
 
 -->

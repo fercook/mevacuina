@@ -1,45 +1,23 @@
 
-Template.editField.helpers({
-   printField: function(obj, fieldname) {
-     return obj[fieldname];
-    }
+function max_steps(process_list){
+  var max_step = 0;
+  process_list.forEach( function(step){
+    if (step.orden>max_step) { max_step = step.orden }
   });
-
-Template.editField.events({
-  "click .edit_field_button": function(event){
-    event.preventDefault();
-    console.log(this);
-    Session.set("editField", this.fieldDescriptor);
-    return false;
-  },
-  "click .confirm_field_button": function(event){
-    event.preventDefault();
-    var new_value =  document.getElementById('field_editor_'+this.fieldDescriptor);
-    var new_obj = {};
-    new_obj[this.fieldDescriptor]=new_value.value;
-    Recetas.update(this.receta._id, {$set: new_obj });
-    Session.set("editField", null);
-    return false;
-  },
-  "click .cancel_field_button": function(event){
-    event.preventDefault();
-    Session.set("editField", null);
-    return false;
-  }
-});
+  return max_step;
+}
 
 
-  Template.editView.rendered = function () {
+Template.editView.rendered = function () {
     AutoCompletion.init("input#paso_accion");
     AutoCompletion.init("input#paso_nom_ingrediente");
     AutoCompletion.init("input#ing_nombre");
-  }
+}
 
 
 Template.editView.events({
   "click .selectable": function(event){
     event.preventDefault();
-    console.log(this);
     return false;
   },
 
@@ -111,6 +89,7 @@ Template.editView.events({
   },
 
   "click .add_ingredient": function(event) { ////ACA HERE TODO
+    event.preventDefault();
     var nombre = document.getElementById('ing_nombre');
     ingredient_ID = Ingredientes.findOne({"nombre": nombre.value});
     if (! ingredient_ID) {
@@ -133,88 +112,46 @@ Template.editView.events({
          }});
     nombre.value="";
     return false;
-  }
-});
-
-
-Template.UnIngrediente.events({
-  "click .item": function(event) {
-    Session.set("editField", this.index);
-    return false;
   },
 
-  "click .edit_ing_button": function(event){
+  "click .add_step": function(event) { ////ACA HERE TODO
     event.preventDefault();
-    Session.set("editField", this.index);
-    return false;
-  },
-
-  "click .confirm_ing_button": function(event){
-    event.preventDefault();
-    var new_qty =  document.getElementById('ing_editor_qty_'+this.index);
-    var new_name =  document.getElementById('ing_editor_name_'+this.index);
-    var new_tipo =  document.getElementById('ing_editor_units_'+this.index);
-    var new_alternativos =  document.getElementById('ing_editor_alt_'+this.index);
-    var ingredient_ID = Ingredientes.findOne({"nombre": new_name.value});
-    if (! ingredient_ID) {
-      ingredient_ID = Ingredientes.insert({
-        "nombre": new_name.value,
+    var accion = document.getElementById('step_action');
+    process_ID = Procedimientos.findOne({"nombre": accion.value});
+    if (! process_ID) {
+      process_ID = Procedimientos.insert({
+        "nombre": accion.value,
         createdAt: new Date()
       });
     }
-    var current_values = this.value;
-    var new_values = {
-      "ID_ingrediente": ingredient_ID,
-      "nombre": new_name.value,
-      "tipo": new_tipo.value,
-      "cantidad": new_qty.value,
-      "alternativos": new_alternativos.value,
-      createdAt: new Date()
-      };
-    var recipe_ID = Session.get("viewRecipe");
-    new_ingredientes = Recetas.findOne(recipe_ID).ingredientes;
-    new_ingredientes[this.index]=new_values;
-    Recetas.update(recipe_ID,
-       {$set: {
-         ingredientes:  new_ingredientes
-       }});
-// DOES NOT WORK!?!?
-//    Meteor.call ("replaceIngredient", recipe_ID, current_values,new_values);
-    //Clean up
-    new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
-    Session.set("editField", null);
-    return false;
-  },
-
-  "click .cancel_ing_button": function(event){
-    event.preventDefault();
-    //Clean up
-  //  new_qty.value=""; new_name.value=""; new_tipo.value=""; new_alternativos.value="";
-    Session.set("editField", null);
-    return false;
-  },
-
-  "click .delete": function(event) {
     recipe_ID = Session.get("viewRecipe");
+    var proceso = Recetas.findOne(recipe_ID).proceso;
+    console.log(proceso);
+    var max_step = max_steps(proceso);
+    console.log(max_step);
     Recetas.update(recipe_ID,
-    {$pull: {ingredientes:
-      {alternativos: this.value.alternativos,
-        cantidad: this.value.cantidad,
-        nombre: this.value.nombre,
-        tipo: this.value.tipo
-      }}});
+    {$push: {
+      proceso:  {
+        "ID_proceso": process_ID,
+        "accion": accion.value,
+        "orden": +max_step+1,
+        "como": "",
+        "utensilios": "",
+        "tiempo": "",
+        "condicion": "",
+        "ingredientes": [],
+        createdAt: new Date()
+      }
+    }});
+    accion.value="";
+    return false;
   }
+
 });
 
-Template.UnIngrediente.helpers({
-  Placeholder: function(field, alttext) {
-    return !field ? alttext : field;
-  },
-  Format: function(field) {
-    return !field ? {class: "italic"} : {class: ""};
-  }
-});
 
+
+/*
 Template.Paso.helpers(
 {
   num_steps: function() {
@@ -266,51 +203,8 @@ Template.Paso.events({
     Session.set("temp_ingredients", temporal_ingredients)
     cantidad.value="";  nombre.value="";
     return false;
-  },
-
-  "click .add_step": function(event) {
-    //Get all fields
-    var orden = document.getElementById("paso_orden");
-    var accion = document.getElementById("paso_accion");
-    var como = document.getElementById("paso_como");
-    var utensilios = document.getElementById("paso_utensilios");
-    var tiempo = document.getElementById("paso_tiempo");
-    var condicion = document.getElementById("paso_condicion");
-    process_ID = Procedimientos.findOne({"nombre": accion.value});
-    if (! process_ID) {
-      process_ID = Procedimientos.insert({
-        "nombre": accion.value,
-        createdAt: new Date()
-      });
-    }
-    var temporal_ingredients = Session.get("temp_ingredients");
-    if (!temporal_ingredients) {
-      temporal_ingredients = [];
-    }
-    //Insert into Mongo
-    recipe_ID = Session.get("viewRecipe");
-    Recetas.update(recipe_ID,
-    {$push: {
-      proceso:  {
-        "ID_proceso": process_ID,
-        "accion": accion.value,
-        "orden": +orden.value,
-        "como": como.value,
-        "utensilios": utensilios.value,
-        "tiempo": tiempo.value,
-        "condicion": condicion.value,
-        "ingredientes": temporal_ingredients,
-        createdAt: new Date()
-      }
-    }});
-    //Clean up
-    Session.set("temp_ingredients", [])
-    orden.value="";  accion.value="";
-    como.value=""; utensilios.value="";
-    tiempo.value="";condicion.value="";
-    conector.value="";
-    return false;
   }
+
 
 })
 

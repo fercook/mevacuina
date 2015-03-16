@@ -2,6 +2,9 @@
 Session.set("viewRecipe", null);
 Session.set("editRecipe",false);
 Session.set("editField",false);
+Session.set("editIngredient",false);
+Session.set("editStep",false);
+Session.set("editStepIngredient",false);
 
 
 /*Template.body.helpers({
@@ -48,6 +51,17 @@ Template.registerHelper("TodosLosIngredientes",  function () {
 
 Template.registerHelper( "editFieldOn", function(whichField) {
       return Session.get("editField")===whichField;
+});
+
+Template.registerHelper( "editIngredientOn", function(whichField) {
+      return Session.get("editIngredient")===whichField;
+});
+
+Template.registerHelper( "editStepOn", function(whichField) {
+      return Session.get("editStep")===whichField;
+});
+Template.registerHelper( "editStepIngredientOn", function(whichField) {
+      return Session.get("editStepIngredient")===whichField;
 });
 
 UI.registerHelper('IndexedList', function (all) {
