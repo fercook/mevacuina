@@ -1,0 +1,107 @@
+<template name="UnPaso">
+  {{#if editStepOn index}}
+  <div class="form-group">
+    <span>
+      Order:
+      <select class="form-control" id="paso_orden_{{index}}">
+        {{#each step_numbers_as_list}}
+          <option value="{{this}}" {{Selected this}}>{{this}}</option>
+        {{/each}}
+      </select>
+      <input class="form-control" type="text" id="step_editor_accion_{{index}}" value="{{value.accion}}" placeholder="Verb or action">
+      <input class="form-control" type="text" id="step_editor_como_{{index}}" value="{{value.como}}" placeholder="How? A modifier to the verb">
+    </span>
+    <span>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Ingredients</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table table-hover">
+            <tbody>
+              {{#each IndexedList value.ingredientes}}
+                <tr>
+                  {{> UnStepIngredient}}
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+          <form class="navbar-form navbar-left new-step-ingredient" role="add">
+            <div class="form-group">
+              <input type="text" class="form-control" id="step_ing_nombre" placeholder="New ingredient name">
+            </div>
+            <button type="submit" class="btn btn-default btn-primary add_step_ingredient">Add</button>
+          </form>
+        </div>
+      </div>
+    </span>
+    <span>
+      <input class="form-control" type="text" id="step_editor_utensilios_{{index}}" value="{{value.utensilios}}" placeholder="Utensils used">
+      <input class="form-control" type="text" id="step_editor_tiempo_{{index}}" value="{{value.tiempo}}" placeholder="For how long? Or until when?">
+    </span>
+    <a class="btn btn-default pull-right cancel_step_button" href="#" role="button">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+    <a class="btn btn-primary btn-default pull-right confirm_step_button" href="#" role="button">
+      <span class="glyphicon glyphicon-ok"></span>
+    </a>
+  </div>
+  {{else}}
+  <span class="item">
+    <span {{Format value.orden}}><strong>{{Placeholder value.orden "(When)"}})</strong></span>
+    <span {{Format value.accion}}>{{Placeholder value.accion "(Verb)"}}</span>
+    {{#if value.como}}
+      <span {{Format value.como}}>{{Placeholder value.como "(How)"}}</span>
+    {{/if}}
+    {{#each value.ingredientes}}
+      <span {{Format nombre}}>{{Placeholder nombre "(Ingredient)"}}</span>,
+    {{/each}}
+    {{#if value.utensilios}}
+      using
+      <span {{Format value.utensilios}}>{{Placeholder value.utensilios "(Utensils)"}}</span>
+    {{/if}}
+    {{#if value.tiempo}}
+      for
+      <span {{Format value.tiempo}}>{{Placeholder value.tiempo "(Time)"}}</span>
+    {{/if}}
+    {{#if value.condicion}}
+      or until
+      <span {{Format value.condicion}}>{{Placeholder value.condicion "(Condition)"}}</span>
+    {{/if}}
+    <a class="btn btn-default btn-xs edit_step_button" href="#" role="button">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+  </span>
+  {{/if}}
+
+</template>
+
+
+
+<template name="UnStepIngredient">
+  {{#if editStepIngredientOn index}}
+  <div class="form-group">
+      <input class="form-control" type="text" id="step_ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
+      <input class="form-control" type="text" id="step_ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
+      <a class="btn btn-default pull-right cancel_step_ing_button" href="#" role="button">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+      <a class="btn btn-primary btn-default pull-right confirm_step_ing_button" href="#" role="button">
+        <span class="glyphicon glyphicon-ok"></span>
+      </a>
+  </div>
+  {{else}}
+  <span class="item">
+    {{value.cantidad}}&nbsp;{{value.nombre}}
+     <a class="btn btn-danger btn-xs remove_step_ingredient_button" href="#" role="button">
+          <span class="glyphicon glyphicon-remove"></span>
+      </a>
+      <a class="btn btn-default btn-xs edit_step_ingredient_button" href="#" role="button">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </a>
+  </span>
+  {{/if}}
+</template>

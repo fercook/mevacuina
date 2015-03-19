@@ -1,89 +1,88 @@
 <template name="editView">
-
-{{#if editStep1}}
-
-  {{> edit1}}
-  <button class="continue1">Editar Ingredientes</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editStep2}}
-  {{> edit2}}
-  <button class="back2">Atras</button>
-  <button class="continue2">Continue</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editStep3}}
-   {{> edit3}}
-   <button class="back3">Atras</button>
-   <button class="continue3">Salvar</button>
-   <button class="cancel">Cancelar</button>
-{{/if}}
-
-{{#if editAllSteps}}
-  {{> edit1}}
-  {{> edit2}}
-  {{> edit3}}
-  <button class="continueAll">Salvar</button>
-  <button class="cancel">Cancelar</button>
-{{/if}}
+  {{> edit}}
+  <button class="continue btn btn-default btn-primary">Continue</button>
 </template>
 
-
-
-<template name="edit1">
+<template name="edit">
   {{#with currentRecipe}}
+    <div class="container">
+      <div class="jumbotron">
+        <h2>
+        {{> editField fieldLabel="" fieldDescriptor="nombre" receta=this}}
+        </h2>
+      </div>
+    </div>
 
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="nombre_receta">Nombre de receta</label>
-      <input class="form-control" type="text" id="nombre_receta" value="{{nombre}}">
+    {{> editField fieldLabel="Bibliographic Reference" fieldDescriptor="referencia" receta=this}}
+    {{> editField fieldLabel="Date" fieldDescriptor="fecha" receta=this}}
+    {{> editField fieldLabel="Region" fieldDescriptor="zona" receta=this}}
+    {{> editField fieldLabel="Variant of" fieldDescriptor="variante" receta=this}}
+    {{> editField fieldLabel="Copy of" fieldDescriptor="copia" receta=this}}
+    {{> editField fieldLabel="Equivalent (in other languages)" fieldDescriptor="equivalentes" receta=this}}
+    {{> editField fieldLabel="Recommended consumption, yield,..." fieldDescriptor="recomendacion" receta=this}}
+
+    <div class="container">
+      <div class="lead">
+        Ingredients
+      </div>
     </div>
-    <div class="col-xs-6">
-      <label for="referencia">Referencia Bibliográfica </label>
-      <input class="form-control" type="text" id="referencia" value="{{referencia}}">
+    <div class="container">
+      <table class="table table-hover">
+        <tbody>
+
+          {{#each IndexedList currentRecipe.ingredientes}}
+            <tr>
+              {{> UnIngrediente}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="fecha_receta">Fecha </label>
-      <input class="form-control" type="text" id="fecha_receta" value="{{fecha}}">
+    <div class="container">
+      <form class="navbar-form navbar-left new-ingredient" role="add">
+        <div class="form-group">
+          <input type="text" class="form-control" id="ing_nombre" placeholder="New ingredient name">
+        </div>
+        <button type="submit" class="btn btn-default btn-primary add_ingredient">Add</button>
+      </form>
     </div>
-    <div class="col-xs-6">
-      <label for="zona_receta">Zona </label>
-      <input class="form-control" type="text" id="zona_receta" value="{{zona}}">
+
+
+    <div class="container">
+      <div class="lead">
+        Steps
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-4">
-      <label for="variante_receta">Variante de </label>
-      <input class="form-control" type="text" id="variante_receta" value="{{variante}}">
+
+    <div class="container">
+      <table class="table table-hover">
+        <tbody>
+
+          {{#each IndexedList currentRecipe.proceso}}
+            <tr>
+              {{> UnPaso}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
-    <div class="col-xs-4">
-      <label for="copia_receta">Copia de </label>
-      <input class="form-control" type="text" id="copia_receta" value="{{copia}}">
+
+    <div class="container">
+      <form class="navbar-form navbar-left new-step" role="add">
+        <div class="form-group">
+          <input type="text" class="form-control" id="step_action" placeholder="New step (action or verb))">
+        </div>
+        <button type="submit" class="btn btn-default btn-primary add_step">Add</button>
+      </form>
     </div>
-    <div class="col-xs-4">
-      <label for="equivalentes">Equivalente (en otras lenguas) </label>
-      <input class="form-control" type="text" id="equivalentes" value="{{equivalentes}}">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-xs-6">
-      <label for="propiedades_receta">Propiedades terapéuticas </label>
-      <input class="form-control" type="text" id="propiedades_receta" value="{{propiedades}}">
-    </div>
-    <div class="col-xs-6">
-      <label for="consumo_recomendado">Consumo recomendado</label>
-      <input class="form-control" type="text" id="consumo_recomendado" value="{{recomendacion}}">
-    </div>
-  </div>
 
   {{/with}}
 </template>
 
 
+
+
+<!--
 
 <template name="edit2">
   <h3>Ingredientes de {{currentRecipe.nombre}}</h3>
@@ -117,11 +116,6 @@
 </template>
 
 
-
-<template name="edit3">
-  <h3>Procedimientos para {{currentRecipe.nombre}}</h3>
-  {{> Paso}}
-</template>
 
 <template name="Paso">
   <table class="table table-condensed table-striped">
@@ -193,3 +187,7 @@
       </tbody>
     </table>
 </template>
+
+
+
+-->

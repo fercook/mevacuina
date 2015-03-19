@@ -15,6 +15,7 @@ Template.listView.events({
       proceso: [],
       createdAt: new Date() // current time
     });
+
     // Clear form
     event.target.text.value = "";
     Session.set("viewRecipe", new_recipe_ID  );
@@ -40,6 +41,14 @@ Template.receta.events({
     var recipe_ID = this._id;
     Recetas.remove(recipe_ID);
     return false;
+  },
+  "click .edit": function(event){
+    event.preventDefault();
+    var recipe_ID = this._id;
+    Session.set("viewRecipe", recipe_ID  );
+    Session.set("editAllSteps",true);
+    return false;
   }
+
 
 });

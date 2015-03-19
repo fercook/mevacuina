@@ -1,15 +1,39 @@
 <template name="listView">
-  <form class="new-recipe">
-    <h1>Nueva Receta</h1>
-    <input type="text" name="text" placeholder="Nombre de la receta"/>
-  </form>
 
-  <h1>Recetas:</h1>
-  <ul>
+  <div class="bs-example" data-example-id="simple-panel">
+  <div class="panel panel-default">
+
+  <form class="new-recipe">
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1"><strong>Enter new recipe:</strong></span>
+      <input type="text" name="text" class="form-control" placeholder="Recipe name" aria-describedby="basic-addon1"/>
+    </div>
+  </form>
+</div>
+  </div>
+
+  <div class="bs-example" data-example-id="simple-panel">
+  <div class="panel panel-default">
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><strong>Recipes</strong></div>
+    <div class="panel-body">
+      <p>Edit or delete these recipes from the database</p>
+    </div>
+  <!--<ul class="list-group list-hover"> -->
+  <table class="table table-hover">
+    <tbody>
     {{#each recetas}}
       {{> receta}}
     {{/each}}
-  </ul>
+  </tbody>
+</table>
+<!--  </ul>-->
+</div>
+</div>
+</div>
+
 </template>
 
 
@@ -20,15 +44,23 @@
   <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
   <span class="input-group-addon">.00</span>
 </div>
+
+<li class="list-group-item">
 -->
-<li>
-  <div class="input-group">
-    <button class="delete input-group-addon">&times;</button>
+  <tr><td>
     <!-- <input type="checkbox" checked="{{checked}}" class="input-group-addon" /> -->
     <span class="text itemReceta">
-      <strong>{{nombre}}</strong> ({{referencia}}) <br>
+      <strong>{{nombre}}</strong> ({{referencia}})
     </span>
-  </div>
+    <a class="btn btn-danger btn-sm pull-right delete" href="#" role="button">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+    <a class="btn btn-primary btn-sm pull-right edit" href="#" role="button">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+  </td>
+</tr>
+<!--
 </li>
-
+-->
 </template>

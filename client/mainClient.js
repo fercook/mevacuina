@@ -1,9 +1,10 @@
 
 Session.set("viewRecipe", null);
-Session.set("editStep1",false);
-Session.set("editStep2",false);
-Session.set("editStep3",false);
-Session.set("editAllSteps",false);
+Session.set("editRecipe",false);
+Session.set("editField",false);
+Session.set("editIngredient",false);
+Session.set("editStep",false);
+Session.set("editStepIngredient",false);
 
 
 /*Template.body.helpers({
@@ -24,6 +25,11 @@ Session.set("editAllSteps",false);
 });
 */
 
+Template.registerHelper("printThing", function(thing) {
+ console.log("Thing: ");
+ console.log(thing);
+ });
+
 Template.registerHelper("currentRecipe", function (){
   return Recetas.findOne(Session.get("viewRecipe"));
 });
@@ -42,6 +48,27 @@ Template.registerHelper("TodosLosIngredientes",  function () {
   return Ingredientes.find({},{ sort: { createdAt: -1 }});
 }
 );
+
+Template.registerHelper( "editFieldOn", function(whichField) {
+      return Session.get("editField")===whichField;
+});
+
+Template.registerHelper( "editIngredientOn", function(whichField) {
+      return Session.get("editIngredient")===whichField;
+});
+
+Template.registerHelper( "editStepOn", function(whichField) {
+      return Session.get("editStep")===whichField;
+});
+Template.registerHelper( "editStepIngredientOn", function(whichField) {
+      return Session.get("editStepIngredient")===whichField;
+});
+
+UI.registerHelper('IndexedList', function (all) {
+    return _.map(all, function(val, index) {
+        return {index: index, value: val};
+    });
+});
 
 
 // create events for the 'input' template
