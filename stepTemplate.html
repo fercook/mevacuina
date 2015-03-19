@@ -1,16 +1,26 @@
 <template name="UnPaso">
   {{#if editStepOn index}}
-  <div class="form-group">
-    <span>
+  <!--div class="form-group"-->
+      
+   <tr><td>
+
+    <div class="col-sm-1"> 
       Order:
+    </div>
+    <div class="col-sm-3"> 
       <select class="form-control" id="paso_orden_{{index}}">
         {{#each step_numbers_as_list}}
           <option value="{{this}}" {{Selected this}}>{{this}}</option>
         {{/each}}
       </select>
+    </div>
+    <div class="col-sm-3">     
       <input class="form-control" type="text" id="step_editor_accion_{{index}}" value="{{value.accion}}" placeholder="Verb or action">
+    </div>
+    <div class="col-sm-5"> 
       <input class="form-control" type="text" id="step_editor_como_{{index}}" value="{{value.como}}" placeholder="How? A modifier to the verb">
-    </span>
+    </div>
+    </td></tr>
     <span>
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -45,7 +55,7 @@
     <a class="btn btn-primary btn-default pull-right confirm_step_button" href="#" role="button">
       <span class="glyphicon glyphicon-ok"></span>
     </a>
-  </div>
+  <!--/div-->
   {{else}}
   <span class="item">
     <span {{Format value.orden}}><strong>{{Placeholder value.orden "(When)"}})</strong></span>
@@ -72,7 +82,7 @@
       <span class="glyphicon glyphicon-pencil"></span>
     </a>
     <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
-      <span class="glyphicon glyphicon-remove"></span>
+      <span class="glyphicon glyphicon-trash"></span>
     </a>
   </span>
   {{/if}}
@@ -83,25 +93,41 @@
 
 <template name="UnStepIngredient">
   {{#if editStepIngredientOn index}}
-  <div class="form-group">
+  <tr><td>
+      <div class="col-sm-1">
       <input class="form-control" type="text" id="step_ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
-      <input class="form-control" type="text" id="step_ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
-      <a class="btn btn-default pull-right cancel_step_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-remove"></span>
+      </div>
+
+      <div class="col-sm-2">
+      <input class="form-control" type="text" id="step_ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name"></div>
+
+      <div class="col-sm-3">
+      <a class="btn btn-default pull-right cancel_step_ing_button glyphicon glyphicon-remove" href="#" role="button">
+        
       </a>
-      <a class="btn btn-primary btn-default pull-right confirm_step_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-ok"></span>
+      </div>
+
+      <div class="col-sm-1 pull-left">
+      <a class="btn btn-primary btn-default pull-right confirm_step_ing_button glyphicon glyphicon-ok" href="#" role="button">
+       
       </a>
-  </div>
+      </div>
+
+  </td></tr>
   {{else}}
+    
+  <tr><td>
+   <div class="col-sm-1"> </div>
   <span class="item">
     {{value.cantidad}}&nbsp;{{value.nombre}}
-     <a class="btn btn-danger btn-xs remove_step_ingredient_button" href="#" role="button">
-          <span class="glyphicon glyphicon-remove"></span>
-      </a>
+     
       <a class="btn btn-default btn-xs edit_step_ingredient_button" href="#" role="button">
         <span class="glyphicon glyphicon-pencil"></span>
       </a>
+      <a class="btn btn-danger btn-xs remove_step_ingredient_button" href="#" role="button">
+          <span class="glyphicon glyphicon-trash"></span>
+      </a>
   </span>
+  </td></tr>
   {{/if}}
 </template>

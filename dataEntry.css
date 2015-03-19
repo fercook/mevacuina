@@ -3,3 +3,105 @@
     font-style: italic;
     color: DarkGray;
 }
+
+/* Template */
+
+    body {
+        padding-top: 40px;
+        padding-bottom: 0px;
+
+
+      }
+	.wrapper{
+		max-width:1210px;
+		display:block;
+		margin-right:auto;
+		margin-left:auto;
+		background:rgba(0,0,0, 0.1);
+		
+	}
+
+	
+	.sub{
+		padding:30px 0px 30px;
+	}
+
+	
+	h1 {
+		font-size: 32.5px;
+	}
+	
+	
+	.thumbnail{
+		margin-bottom:30px;
+	}
+	
+	.thumbnail img{
+		min-width:100%;
+	}
+	footer{
+		padding-top:40px;
+		margin-top:40px;
+		border-top:1px solid #dedede;
+		background:rgba(0,0,0, 0.7);
+		color:#fff;
+	}
+
+	.related-projects{
+		padding-top:20px;
+		margin-top:20px;
+		
+	}
+	@media (min-width: 992px) and (max-width: 1200px){
+	.navbar, .wrapper {
+	max-width: 1000px;
+	margin-right:auto;
+	margin-left:auto;
+	}
+
+	}
+	
+	@media(min-width: 768px) and (max-width: 992px){
+	.navbar, .wrapper {
+	max-width: 760px;
+	margin-right:auto;
+	margin-left:auto;
+	}
+
+	}
+	
+	@media (max-width: 992px){
+		.navbar .btn-navbar {
+			margin-top:20px;
+		}
+		
+	}
+	
+	@media (max-width: 767px){
+		.container {
+			padding-right:20px;
+			padding-left:20px;
+		}
+		body{
+			padding-top:0px;
+		}
+	}
+/* Elements */
+.input-group-addon.info {
+    color: rgb(255, 255, 255);
+    background-color: rgb(57, 179, 215);
+    border-color: rgb(38, 154, 188);
+}
+
+.jumbotron.headertit {
+    color:  rgb(255, 255, 255);
+    background-color: rgb(57, 179, 215);
+    border-color: rgb(38, 154, 188);
+}
+
+.jumbotron.middle {
+    color:  rgb(255, 255, 255);
+    background-color: #cccccc;
+    border-color: rgb(38, 154, 188);
+    height:100px;
+}

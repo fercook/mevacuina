@@ -1,19 +1,37 @@
 <template name="UnIngrediente">
   {{#if editIngredientOn index}}
-  <div class="form-group">
+  <!--div class="form-group"-->
+    <tr><td>
+    
+     
+
+    <div class="col-sm-1"> 
       <input class="form-control" type="text" id="ing_editor_qty_{{index}}" value="{{value.cantidad}}" placeholder="Qty.">
+    </div>
+
+    <div class="col-sm-2"> 
       <input class="form-control" type="text" id="ing_editor_units_{{index}}" value="{{value.tipo}}" placeholder="Units">
+      </div>
+
+    <div class="col-sm-2"> 
       <input class="form-control" type="text" id="ing_editor_name_{{index}}" value="{{value.nombre}}" placeholder="Ingredient name">
+      </div>
+
+    <div class="col-sm-2"> 
       <input class="form-control" type="text" id="ing_editor_alt_{{index}}" value="{{value.alternativos}}" placeholder="Alternatives">
-      <a class="btn btn-default pull-right cancel_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-remove"></span>
-      </a>
-      <a class="btn btn-primary btn-default pull-right confirm_ing_button" href="#" role="button">
-        <span class="glyphicon glyphicon-ok"></span>
-      </a>
-  </div>
+      </div>
+
+    <div class="col-sm-2 pull-left"> 
+      <a class="btn btn-default pull-right cancel_ing_button glyphicon glyphicon-remove" href="#" role="button"></a>
+      <a class="btn btn-primary btn-default pull-right confirm_ing_button glyphicon glyphicon-ok" href="#" role="button"></a>
+    </div>
+
+    </td></tr>
+    
   {{else}}
-  <span class="item">
+ <tr><td>
+      <div class="col-sm-1"> </div>
+      
     <span {{Format value.cantidad}}>{{Placeholder value.cantidad "Qty."}}</span>
     &nbsp;
     <span {{Format value.tipo}}>{{Placeholder value.tipo "units"}}</span>
@@ -27,8 +45,8 @@
       <span class="glyphicon glyphicon-pencil"></span>
     </a>
     <a class="btn btn-danger btn-xs btn-default delete" href="#" role="button">
-      <span class="glyphicon glyphicon-remove"></span>
+      <span class="glyphicon glyphicon-trash"></span>
     </a>
-  </span>
+  </td></tr>
   {{/if}}
 </template>
